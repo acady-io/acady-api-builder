@@ -1,0 +1,29 @@
+{
+  "hosting": {
+    "hostingProvider": "npm",
+    "providerData": {
+      "npmPackage": "acady-api-builder",
+      "npmOrg": "",
+      "npmFullPackage": "acady-api-builder"
+    }
+  },
+  "accounts": {
+    "github": {
+      "accountId": "christian-schab"
+    },
+    "npm": {
+      "accountId": "christian.schab"
+    }
+  },
+  "repository": {
+    "provider": "github",
+    "gitUrl": "https://github.com/acady-io/acady-api-builder.git",
+    "fullName": "acady-io/acady-api-builder"
+  },
+  "name": "Acady API Builder",
+  "id": "acady-api-builder",
+  "projectId": "lMy5n7wZ3ubgyXMuqtVts",
+  "type": "backend",
+  "subtype": "backend_library",
+  "template": "template-backend-library"
+}
