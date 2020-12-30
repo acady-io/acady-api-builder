@@ -1,7 +1,6 @@
 {
   "name": "acady-api-builder",
   "version": "0.0.1-dev",
-  "private": true,
   "description": "Acady API Builder",
   "main": "./build/index.js",
   "files": [
@@ -21,7 +20,7 @@
     "typescript": "^4.1.3"
   },
   "license": "MIT",
-  "author": "schab",
+  "author": "Christian Schab <christian.schab@web.academy>",
   "repository": {
     "type": "git",
     "url": "https://github.com/acady-io/acady-api-builder.git"
