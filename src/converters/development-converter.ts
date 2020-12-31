@@ -8,7 +8,7 @@ export class DevelopmentConverter {
         return new AcadyApiRequest();
     }
 
-    public static convertResponse(response: AcadyApiResponse): any {
+    public static convertResponse(acadyApiResponse: AcadyApiResponse, response: any): any {
         console.log(response);
     }
 }

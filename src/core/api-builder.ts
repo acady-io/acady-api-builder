@@ -4,6 +4,7 @@ import {AcadyApiResponse} from "../dto/acady-api-response";
 import {DevelopmentConverter} from "../converters/development-converter";
 import {RouteMatchingHelper} from "../helpers/route-matching-helper";
 import {ApiHeaders} from "./api-headers";
+import {ExpressConverter} from "../converters/express-converter";
 
 export class ApiBuilder {
     private apiRoutes: ApiRoute[] = [];
@@ -42,7 +43,7 @@ export class ApiBuilder {
         })
     }
 
-    public async process(event: any, eventType: string) {
+    public async process(event: any, response: any, eventType: string) {
         let acadyRequest = this.convertRequest(event, eventType);
         let acadyResponse: AcadyApiResponse;
 
@@ -55,26 +56,31 @@ export class ApiBuilder {
         } catch (e) {
             acadyResponse = {
                 headers: new ApiHeaders([]),
-                body: 'Error: ' + e.message
+                body: 'Error: ' + e.message,
+                status: 500
             };
         }
 
-        return this.convertResponse(acadyResponse, eventType);
+        this.convertResponse(acadyResponse, response, eventType);
     }
 
     private convertRequest(event: any, eventType: string): AcadyApiRequest {
         switch (eventType) {
             case "development":
                 return DevelopmentConverter.convertRequest(event);
+            case "EXPRESS":
+                return ExpressConverter.convertRequest(event);
             default:
                 throw new Error('EventType ' + eventType + ' not known!');
         }
     }
 
-    private convertResponse(response: AcadyApiResponse, eventType: string): any {
+    private convertResponse(acadyApiResponse: AcadyApiResponse, response: any, eventType: string): any {
         switch (eventType) {
             case "development":
-                return DevelopmentConverter.convertResponse(response);
+                return DevelopmentConverter.convertResponse(acadyApiResponse, response);
+            case "EXPRESS":
+                return ExpressConverter.convertResponse(acadyApiResponse, response);
             default:
                 throw new Error('EventType ' + eventType + ' not known!');
         }

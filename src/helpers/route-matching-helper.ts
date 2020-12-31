@@ -11,22 +11,26 @@ export class RouteMatchingHelper {
         }
 
         const routePathParts = apiRoute.path.split('/');
-        const requestPathParts = apiRequest.routePath.split('/');
+        const requestPathParts = apiRequest.pathName.split('/');
+
+        // console.log("RoutePathParts:", routePathParts);
+        // console.log("RequestPathParts:", requestPathParts);
 
         const pathParams = new Map<string, string>();
 
-        for (let i = 1; i <= routePathParts.length; i++) {
+        for (let i = 1; i < routePathParts.length; i++) {
             let routePathPart: string = routePathParts[i];
             let requestPathPart: string = decodeURIComponent(requestPathParts[i]);
 
             if (routePathPart.startsWith(':')) {
                 pathParams.set(routePathPart.substr(1), requestPathPart);
-            } else if (routePathPart !== requestPathPart) {
+            } else if (!requestPathPart.startsWith(routePathPart)) {
                 return false;
             }
         }
 
         apiRequest.pathParams = pathParams;
+        apiRequest.routePath = apiRoute.path;
 
         return true;
     }
