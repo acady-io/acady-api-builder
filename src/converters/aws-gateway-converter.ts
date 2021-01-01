@@ -15,7 +15,7 @@ export class AwsGatewayConverter {
             request.headers.append(key.toLowerCase(), event.headers[key]);
         });
 
-        return null;
+        return request;
     }
 
     public static convertResponse(acadyApiResponse: AcadyApiResponse, response: any): any {

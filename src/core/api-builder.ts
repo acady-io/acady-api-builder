@@ -45,16 +45,17 @@ export class ApiBuilder {
     }
 
     public async process(event: any, response: any, eventType: string) {
-        let acadyRequest = this.convertRequest(event, eventType);
         let acadyResponse: AcadyApiResponse;
 
         try {
+            let acadyRequest = this.convertRequest(event, eventType);
             let route = this.getMatchingRoute(acadyRequest);
             if (!route)
                 throw new Error('No Route found!');
 
             acadyResponse = await route.requestHandler(acadyRequest);
         } catch (e) {
+            console.log(e);
             acadyResponse = {
                 headers: new ApiHeaders([]),
                 body: 'Error: ' + e.message,
@@ -92,7 +93,7 @@ export class ApiBuilder {
     }
 
 
-    private getMatchingRoute(apiRequest: AcadyApiRequest): ApiRoute|undefined {
+    private getMatchingRoute(apiRequest: AcadyApiRequest): ApiRoute | undefined {
         for (let apiRoute of this.apiRoutes) {
             if (RouteMatchingHelper.match(apiRoute, apiRequest))
                 return apiRoute;
