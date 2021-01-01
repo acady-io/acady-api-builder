@@ -5,6 +5,7 @@ import {DevelopmentConverter} from "../converters/development-converter";
 import {RouteMatchingHelper} from "../helpers/route-matching-helper";
 import {ApiHeaders} from "./api-headers";
 import {ExpressConverter} from "../converters/express-converter";
+import {AwsGatewayConverter} from "../converters/aws-gateway-converter";
 
 export class ApiBuilder {
     private apiRoutes: ApiRoute[] = [];
@@ -70,6 +71,8 @@ export class ApiBuilder {
                 return DevelopmentConverter.convertRequest(event);
             case "EXPRESS":
                 return ExpressConverter.convertRequest(event);
+            case "AWS_GATEWAY_HTTP":
+                return AwsGatewayConverter.convertRequest(event);
             default:
                 throw new Error('EventType ' + eventType + ' not known!');
         }
@@ -81,6 +84,8 @@ export class ApiBuilder {
                 return DevelopmentConverter.convertResponse(acadyApiResponse, response);
             case "EXPRESS":
                 return ExpressConverter.convertResponse(acadyApiResponse, response);
+            case "AWS_GATEWAY_HTTP":
+                return AwsGatewayConverter.convertResponse(acadyApiResponse, response);
             default:
                 throw new Error('EventType ' + eventType + ' not known!');
         }
