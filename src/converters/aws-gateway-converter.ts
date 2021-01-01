@@ -15,6 +15,8 @@ export class AwsGatewayConverter {
             request.headers.append(key.toLowerCase(), event.headers[key]);
         });
 
+        console.log(request);
+
         return request;
     }
 
