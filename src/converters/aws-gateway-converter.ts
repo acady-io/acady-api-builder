@@ -3,17 +3,21 @@ import {AcadyApiResponse} from "../dto/acady-api-response";
 import {ApiHeaders} from "../core/api-headers";
 
 export class AwsGatewayConverter {
+    public static TYPE = "AWS_GATEWAY_HTTP";
 
     public static convertRequest(event: any): AcadyApiRequest {
-        console.log(JSON.stringify(event));
-
         const request = new AcadyApiRequest();
-        request.method = event.method;
-        request.pathName = event.rawPath;
+        request.method = event.requestContext.http.method;
+        request.pathName = '/' + event.pathParameters.proxy;
         request.headers = new ApiHeaders();
+        request.queryParams = event.queryStringParameters;
         Object.keys(event.headers).forEach(key => {
             request.headers.append(key.toLowerCase(), event.headers[key]);
         });
+        request.endpoint = `https://${event.requestContext.domainName}/${event.requestContext.stage}`;
+        request.fullUrl = request.endpoint + request.pathName;
+        if (event.rawQueryString.length > 0)
+            request.fullUrl += '?' + event.rawQueryString;
 
         console.log(request);
 

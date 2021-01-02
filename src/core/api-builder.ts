@@ -1,7 +1,6 @@
 import {ApiRoute} from "../dto/api-route";
 import {AcadyApiRequest} from "../dto/acady-api-request";
 import {AcadyApiResponse} from "../dto/acady-api-response";
-import {DevelopmentConverter} from "../converters/development-converter";
 import {RouteMatchingHelper} from "../helpers/route-matching-helper";
 import {ApiHeaders} from "./api-headers";
 import {ExpressConverter} from "../converters/express-converter";
@@ -50,10 +49,15 @@ export class ApiBuilder {
         try {
             let acadyRequest = this.convertRequest(event, eventType);
             let route = this.getMatchingRoute(acadyRequest);
-            if (!route)
-                throw new Error('No Route found!');
-
-            acadyResponse = await route.requestHandler(acadyRequest);
+            if (!route) {
+                acadyResponse = {
+                    headers: new ApiHeaders([]),
+                    body: 'Error: Route not found' ,
+                    status: 404
+                };
+            } else {
+                acadyResponse = await route.requestHandler(acadyRequest);
+            }
         } catch (e) {
             console.log(e);
             acadyResponse = {
@@ -68,11 +72,9 @@ export class ApiBuilder {
 
     private convertRequest(event: any, eventType: string): AcadyApiRequest {
         switch (eventType) {
-            case "development":
-                return DevelopmentConverter.convertRequest(event);
-            case "EXPRESS":
+            case ExpressConverter.TYPE:
                 return ExpressConverter.convertRequest(event);
-            case "AWS_GATEWAY_HTTP":
+            case AwsGatewayConverter.TYPE:
                 return AwsGatewayConverter.convertRequest(event);
             default:
                 throw new Error('EventType ' + eventType + ' not known!');
@@ -81,11 +83,9 @@ export class ApiBuilder {
 
     private convertResponse(acadyApiResponse: AcadyApiResponse, response: any, eventType: string): any {
         switch (eventType) {
-            case "development":
-                return DevelopmentConverter.convertResponse(acadyApiResponse, response);
-            case "EXPRESS":
+            case ExpressConverter.TYPE:
                 return ExpressConverter.convertResponse(acadyApiResponse, response);
-            case "AWS_GATEWAY_HTTP":
+            case AwsGatewayConverter.TYPE:
                 return AwsGatewayConverter.convertResponse(acadyApiResponse, response);
             default:
                 throw new Error('EventType ' + eventType + ' not known!');
@@ -98,7 +98,6 @@ export class ApiBuilder {
             if (RouteMatchingHelper.match(apiRoute, apiRequest))
                 return apiRoute;
         }
-
         return;
     }
 }

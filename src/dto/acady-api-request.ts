@@ -8,8 +8,8 @@ export class AcadyApiRequest {
     pathName!: string;
     routePath!: string;
     endpoint!: string;
-    queryParams!: URLSearchParams;
-    pathParams!: Map<string, string>;
+    queryParams!: any;
+    pathParams!: any;
     body: any;
     fullUrl: string;
 }

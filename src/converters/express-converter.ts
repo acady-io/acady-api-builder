@@ -4,6 +4,7 @@ import {ApiHeaders} from "../core/api-headers";
 import {URL} from "url";
 
 export class ExpressConverter {
+    public static TYPE = "EXPRESS";
 
     public static convertRequest(event: any): AcadyApiRequest {
 
@@ -12,22 +13,29 @@ export class ExpressConverter {
         const fullUrl = protocol + '://' + hostname + event.originalUrl;
         const url = new URL(fullUrl);
         const headers = new ApiHeaders();
+        const endpoint = protocol + '://' + hostname;
 
         Object.keys(event.headers).forEach(key => {
             let value = event.headers[key];
             headers.append(key, value);
         });
 
+        const queryParams: any = {};
+
+        for (let key of url.searchParams.keys()) {
+            queryParams[key] = url.searchParams.get(key);
+        }
+
         return {
             method: event.method,
             hostname: event.hostname,
             headers: headers,
             pathName: url.pathname,
-            queryParams: url.searchParams,
+            queryParams: queryParams,
             body: event.body,
             routePath: null,
             pathParams: null,
-            endpoint: null,
+            endpoint: endpoint,
             fullUrl: fullUrl
         };
     }

@@ -6,7 +6,6 @@ export class RouteMatchingHelper {
     public static match(apiRoute: ApiRoute, apiRequest: AcadyApiRequest) {
         if (apiRoute.method !== 'ANY') {
             if (apiRoute.method !== apiRequest.method) {
-                console.log("Method mismatch");
                 return false;
             }
         }
@@ -14,17 +13,14 @@ export class RouteMatchingHelper {
         const routePathParts = apiRoute.path.split('/');
         const requestPathParts = apiRequest.pathName.split('/');
 
-        console.log("RoutePathParts:", routePathParts);
-        console.log("RequestPathParts:", requestPathParts);
-
-        const pathParams = new Map<string, string>();
+        const pathParams = {};
 
         for (let i = 1; i < routePathParts.length; i++) {
             let routePathPart: string = routePathParts[i];
             let requestPathPart: string = decodeURIComponent(requestPathParts[i]);
 
             if (routePathPart.startsWith(':')) {
-                pathParams.set(routePathPart.substr(1), requestPathPart);
+                pathParams[routePathPart.substr(1)] = requestPathPart;
             } else if (!requestPathPart.startsWith(routePathPart)) {
                 return false;
             }
