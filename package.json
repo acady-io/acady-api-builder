@@ -3,6 +3,13 @@
   "version": "0.0.1-dev",
   "description": "Acady API Builder",
   "main": "./build/index.js",
+  "keywords": [
+    "acady",
+    "rest",
+    "api-server",
+    "serverless",
+    "api"
+  ],
   "files": [
     "build"
   ],
