@@ -13,21 +13,23 @@ export class AwsGatewayConverter {
             request.pathName = '/' + event.pathParameters.proxy;
             request.headers = new ApiHeaders();
             request.queryParams = event.queryStringParameters;
-            Object.keys(event.multiValueHeaders).forEach(key => {
-                const values: string[] = event.headers[key];
-                for (let value of values) {
-                    request.headers.append(key.toLowerCase(), value);
-                }
-            });
+            if (event.multiValueHeaders)
+                Object.keys(event.multiValueHeaders).forEach(key => {
+                    const values: string[] = event.headers[key];
+                    for (let value of values) {
+                        request.headers.append(key.toLowerCase(), value);
+                    }
+                });
             request.endpoint = `https://${event.requestContext.domainName}/${event.requestContext.stage}`;
 
             const urlSearchParams = new URLSearchParams();
-            Object.keys(event.multiValueQueryStringParameters).forEach(key => {
-                const values: string[] = event.multiValueQueryStringParameters[key];
-                for (let value of values) {
-                    urlSearchParams.append(key, value);
-                }
-            });
+            if (event.multiValueQueryStringParameters)
+                Object.keys(event.multiValueQueryStringParameters).forEach(key => {
+                    const values: string[] = event.multiValueQueryStringParameters[key];
+                    for (let value of values) {
+                        urlSearchParams.append(key, value);
+                    }
+                });
 
             request.fullUrl = request.endpoint + request.pathName;
             if (urlSearchParams.toString().length > 0)
