@@ -52,6 +52,15 @@ export class AwsGatewayConverter {
             console.log(request);
         }
 
+        if (event.body) {
+            let body = event.body;
+            if (request.headers.getValue('content-type').startsWith('applicatino/json')) {
+                body = JSON.parse(body);
+            }
+
+            request.body = body;
+        }
+
 
         return request;
     }
