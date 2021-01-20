@@ -18,11 +18,11 @@ export class ApiBuilder {
     }
 
     public put(path: string, requestHandler: Function) {
-        this.request('POST', path, requestHandler);
+        this.request('PUT', path, requestHandler);
     }
 
     public head(path: string, requestHandler: Function) {
-        this.request('POST', path, requestHandler);
+        this.request('HEAD', path, requestHandler);
     }
 
     public delete(path: string, requestHandler: Function) {
@@ -48,11 +48,11 @@ export class ApiBuilder {
 
         try {
             let acadyRequest = this.convertRequest(event, eventType);
-            let route = this.getMatchingRoute(acadyRequest);
+            let route = this.getBestMatchingRoute(acadyRequest);
             if (!route) {
                 acadyResponse = {
                     headers: new ApiHeaders([]),
-                    body: 'Error: Route not found' ,
+                    body: 'Error: Route not found',
                     status: 404
                 };
             } else {
@@ -93,11 +93,8 @@ export class ApiBuilder {
     }
 
 
-    private getMatchingRoute(apiRequest: AcadyApiRequest): ApiRoute | undefined {
-        for (let apiRoute of this.apiRoutes) {
-            if (RouteMatchingHelper.match(apiRoute, apiRequest))
-                return apiRoute;
-        }
-        return;
+    private getBestMatchingRoute(apiRequest: AcadyApiRequest): ApiRoute | undefined {
+        const matchingRoutes = this.apiRoutes.filter(apiRoute => RouteMatchingHelper.match(apiRoute, apiRequest));
+        return matchingRoutes[0];
     }
 }

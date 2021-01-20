@@ -17,14 +17,28 @@ export class RouteMatchingHelper {
 
         for (let i = 1; i < routePathParts.length; i++) {
             let routePathPart: string = routePathParts[i];
-            let requestPathPart: string = decodeURIComponent(requestPathParts[i]);
+            let requestPathPart: string = requestPathParts[i] ? decodeURIComponent(requestPathParts[i]) : null;
+
+            if (!requestPathPart) {
+                return false;
+            }
 
             if (routePathPart.startsWith(':')) {
                 pathParams[routePathPart.substr(1)] = requestPathPart;
-            } else if (!requestPathPart.startsWith(routePathPart)) {
+            } else if (requestPathPart !== routePathPart) {
                 return false;
             }
         }
+
+        for (let i = 1; i < requestPathParts.length; i++) {
+            let routePathPart: string = routePathParts[i];
+            // let requestPathPart: string = decodeURIComponent(requestPathParts[i]);
+
+            if (!routePathPart) {
+                return false;
+            }
+        }
+
 
         apiRequest.pathParams = pathParams;
         apiRequest.routePath = apiRoute.path;

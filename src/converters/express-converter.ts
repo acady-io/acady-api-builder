@@ -44,7 +44,6 @@ export class ExpressConverter {
 
         response.status(acadyApiResponse.status);
         for (let header of acadyApiResponse.headers.entries()) {
-            console.log("Add Header " + header.key);
             response.append(header.key, header.value);
         }
         response.send(acadyApiResponse.body);
