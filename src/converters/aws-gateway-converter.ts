@@ -54,7 +54,7 @@ export class AwsGatewayConverter {
 
         if (event.body) {
             let body = event.body;
-            if (request.headers.getValue('content-type').startsWith('applicatino/json')) {
+            if (request.headers.getValue('content-type').startsWith('application/json')) {
                 body = JSON.parse(body);
             }
 
