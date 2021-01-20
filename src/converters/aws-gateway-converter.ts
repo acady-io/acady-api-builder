@@ -15,7 +15,7 @@ export class AwsGatewayConverter {
             request.queryParams = event.queryStringParameters;
             if (event.multiValueHeaders)
                 Object.keys(event.multiValueHeaders).forEach(key => {
-                    const values: string[] = event.headers[key];
+                    const values: string[] = event.multiValueHeaders[key];
                     for (let value of values) {
                         request.headers.append(key.toLowerCase(), value);
                     }
