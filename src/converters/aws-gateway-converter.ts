@@ -35,7 +35,7 @@ export class AwsGatewayConverter {
             if (urlSearchParams.toString().length > 0)
                 request.fullUrl += '?' + urlSearchParams.toString();
 
-            console.log(request);
+            // console.log(request);
         } else if (event.version === "2.0") {
             request.method = event.requestContext.http.method;
             request.pathName = '/' + event.pathParameters.proxy;
@@ -49,7 +49,7 @@ export class AwsGatewayConverter {
             if (event.rawQueryString.length > 0)
                 request.fullUrl += '?' + event.rawQueryString;
 
-            console.log(request);
+            // console.log(request);
         }
 
         if (event.body) {
