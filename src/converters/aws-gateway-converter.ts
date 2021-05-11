@@ -78,6 +78,10 @@ export class AwsGatewayConverter {
             response.multiValueHeaders[key].push(value);
         }
         response.body = acadyApiResponse.body;
+
+        if (acadyApiResponse.isBase64Encoded === true) {
+            response.isBase64Encoded = true;
+        }
     }
 
 }
