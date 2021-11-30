@@ -26,19 +26,34 @@ export class ExpressConverter {
             queryParams[key] = url.searchParams.get(key);
         }
 
-        return {
+
+
+        const request: AcadyApiRequest = {
             method: event.method,
             hostname: event.hostname,
             headers: headers,
             pathName: url.pathname,
             queryParams: queryParams,
-            body: event.body,
             routePath: null,
             pathParams: null,
             endpoint: endpoint,
             fullUrl: fullUrl,
-            rawBody: event.rawBody
+            body: undefined,
+            rawBody: undefined
         };
+
+        if (event.body) {
+            let body = event.body;
+            if (Buffer.isBuffer(body)) body = body.toString("utf8");
+            if (request.headers.getValue('content-type').startsWith('application/json')) {
+                body = JSON.parse(body);
+            }
+
+            request.body = body;
+            request.rawBody = event.body;
+        }
+
+        return request;
     }
 
     public static convertResponse(acadyApiResponse: AcadyApiResponse, response: any): any {
