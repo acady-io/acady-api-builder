@@ -59,6 +59,7 @@ export class AwsGatewayConverter {
             }
 
             request.body = body;
+            request.rawBody = event.body;
         }
 
 

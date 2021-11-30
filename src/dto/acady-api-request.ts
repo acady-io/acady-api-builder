@@ -12,4 +12,5 @@ export class AcadyApiRequest {
     pathParams!: any;
     body: any;
     fullUrl: string;
+    rawBody: Buffer | string;
 }

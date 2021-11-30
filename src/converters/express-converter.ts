@@ -36,7 +36,8 @@ export class ExpressConverter {
             routePath: null,
             pathParams: null,
             endpoint: endpoint,
-            fullUrl: fullUrl
+            fullUrl: fullUrl,
+            rawBody: event.rawBody
         };
     }
 
