@@ -26,8 +26,6 @@ export class ExpressConverter {
             queryParams[key] = url.searchParams.get(key);
         }
 
-
-
         const request: AcadyApiRequest = {
             method: event.method,
             hostname: event.hostname,
