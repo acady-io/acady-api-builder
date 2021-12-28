@@ -43,7 +43,7 @@ export class ExpressConverter {
         if (event.body) {
             let body = event.body;
             if (Buffer.isBuffer(body)) body = body.toString("utf8");
-            if (request.headers.getValue('content-type').startsWith('application/json')) {
+            if (request.headers?.getValue('content-type')?.startsWith('application/json')) {
                 body = JSON.parse(body);
             }
 
