@@ -15,7 +15,7 @@ describe('Api Builder Middleware', () => {
     return {
       status: 200,
       headers: new ApiHeaders(),
-      body: JSON.stringify({ message: 'GET /123 200' }),
+      body: { message: 'GET /123 200' },
     };
   });
 
@@ -28,9 +28,9 @@ describe('Api Builder Middleware', () => {
       },
       method: 'GET',
       hostname: 'localhost',
-      body: JSON.stringify({
+      body: {
         message: 'Hello World',
-      }),
+      },
       get(key: string) {
         if (key === 'host') {
           return 'localhost';
