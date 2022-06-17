@@ -42,3 +42,7 @@ yarn.lock
 
 # others
 .DS_Store
+
+# build
+
+build
