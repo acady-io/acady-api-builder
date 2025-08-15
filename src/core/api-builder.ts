@@ -43,11 +43,10 @@ export class ApiBuilder {
         })
     }
 
-    public async process(event: any, response: any, eventType: string) {
+    public async processAcadyRequest(acadyRequest: AcadyApiRequest) {
         let acadyResponse: AcadyApiResponse;
 
         try {
-            let acadyRequest = this.convertRequest(event, eventType);
             let route = this.getBestMatchingRoute(acadyRequest);
             if (!route) {
                 acadyResponse = {
@@ -58,6 +57,24 @@ export class ApiBuilder {
             } else {
                 acadyResponse = await route.requestHandler(acadyRequest);
             }
+        } catch (e) {
+            console.log(e);
+            acadyResponse = {
+                headers: new ApiHeaders([]),
+                body: 'Error: ' + e.message,
+                status: 500
+            };
+        }
+
+        return acadyResponse;
+    }
+
+    public async process(event: any, response: any, eventType: string) {
+        let acadyResponse: AcadyApiResponse;
+
+        try {
+            let acadyRequest = this.convertRequest(event, eventType);
+            acadyResponse = await this.processAcadyRequest(acadyRequest);
         } catch (e) {
             console.log(e);
             acadyResponse = {
